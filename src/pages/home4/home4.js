@@ -1,12 +1,16 @@
 import "./home4.css";
-import BlockchainHole1 from "../../assets/images/blockchain_black_hole-rotated1.png";
-import BlockchainHole from "../../assets/images/blockchain_black_hole-rotated.jpg";
-import GradientBlob from "../../assets/videos/gradient_blob.mp4";
+import BlockchainHole from "../../assets/images/background/blockchain_black_hole-rotated.png";
 // import HomepageBottomEarth from "../../assets/images/background/homepage-earth-background.jpg"
-import HomepageBottomEarth_transparent from "../../assets/images/background/homepage-earth-background-transparent.png"
-import Xenia_Logo from "../../assets/images/xeniaLogoLight.png";
 import gradientBlock from "../../assets/images/gradient-small-cube.svg";
+import hex_2xblock_left from "../../assets/images/Block_x2_Left_shadow.png";
+import hex_2xblock_right from "../../assets/images/Block_x2_Right_shadowless.png";
+import hex_3xblock_left from "../../assets/images/Block_x3_Left_shadow.png";
+import hex_3xblock_right from "../../assets/images/Block_x3_Right_shadowless.png";
+import sponsors_logo from "../../assets/images/Cion Logo_Horizontal Stacked_Green.svg";
+import Xenia_Logo from "../../assets/images/xeniaLogoLight.png";
+import HomepageBottomEarth_transparent from "../../assets/images/background/homepage-earth-background-transparent.png"
 import { MouseParallaxContainer, MouseParallaxChild } from "react-parallax-mouse";
+import { Link } from "react-router-dom";
 
 function Homepage() {
 
@@ -96,32 +100,29 @@ function Homepage() {
     },
   ]
 
-  const floatingIcons = []
+  const floatingIcons = [gradientBlock, hex_2xblock_left, hex_3xblock_right, hex_2xblock_right, gradientBlock, hex_3xblock_left]
 
   for (let i = 0; i < animationInitials.length; i++) {
     floatingIcons.push(
-      <image key={i} id={i} x={animationInitials[i].initialXEndpoints.split(";")[0]} y={animationInitials[i].initialYEndpoints.split(";")[0]} href={gradientBlock} style={{ AnimationDuration: `${7 + i}s` }} >
+      <image key={i} id={i} x={animationInitials[i].initialXEndpoints.split(";")[0]} y={animationInitials[i].initialYEndpoints.split(";")[0]} href={floatingIcons[i % 6]} style={{ AnimationDuration: `${9 + i}s` }} >
         <animate attributeName="x" values={animationPointsGenerator(animationInitials[i]).x} dur={`${6 + i}s`} repeatCount="indefinite" />
         <animate attributeName="y" values={animationPointsGenerator(animationInitials[i]).y} dur={`${6 + i}s`} repeatCount="indefinite" />
-        <animate attributeName="opacity" values="1;1;1;.25;.45;.6;.7;.5;0" dur={`${6 + i}s`} repeatCount="indefinite" />
-        <animate attributeName="width" values="1;5;10;20;25;30;33.5;45;57.5;60;72.5;85;90;105" dur={`${6 + i}s`} repeatCount="indefinite" />
-        <animate attributeName="height" values="1;5;10;20;25;30;33.5;45;57.5;60;72.5;85;90;105" dur={`${6 + i}s`} repeatCount="indefinite" />
+        <animate attributeName="opacity" values="1;1;1;.25;.45;.6;.7;.5;.3;0" dur={`${6 + i}s`} repeatCount="indefinite" />
+        <animate attributeName="width" values="1;5;10;20;25;30;33.5;45;57.5;60;72.5;85;90;95;105" dur={`${6 + i}s`} repeatCount="indefinite" />
+        <animate attributeName="height" values="1;5;10;20;25;30;33.5;45;57.5;60;72.5;85;90;95;105" dur={`${6 + i}s`} repeatCount="indefinite" />
       </image>
     );
   }
 
   return (
     <div className="homepage">
-      <video autoPlay="autoplay" controls="controls" loop muted className="background-video">
-        <source type="video/mp4" src={GradientBlob}></source>
-      </video>
       <div className="homepage-background-container">
         <div class="tso-rainbow"></div>
         <MouseParallaxContainer resetOnLeave containerStyles={{ position: "absolute" }}>
           <MouseParallaxChild factorX={0.04} factorY={0.02} inverted >
             <img
               className="homepage-background-img hole"
-              src={BlockchainHole1}
+              src={BlockchainHole}
               alt="homepage-gradient"
             />
           </MouseParallaxChild>
@@ -198,7 +199,13 @@ function Homepage() {
         </MouseParallaxContainer>
       </div>
       <header className="homepage-contents">
-        <img className="xenia-logo" src={Xenia_Logo} alt="Xenia'22 logo" />
+        <div className="logos">
+          <a href="https://www.ciondigital.com/" target="_blank" rel="noopener noreferrer">
+            <img className="sponsors-logo" src={sponsors_logo} alt="sponsors-logo" title="Cion Digital"></img>
+          </a>
+          <h1>PRESENTS</h1>
+          <img className="xenia-logo" src={Xenia_Logo} alt="Xenia'22 logo" title="Xenia 2022" />
+        </div>
         <h2>
           <span>WHERE</span>
           <span>PASSION</span>

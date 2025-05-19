@@ -1,9 +1,12 @@
 import xenialogo from "../assets/images/CSI_Logo_blue.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { scrollToTop } from "../utils";
 
 const Footer = () => {
+  let location = useLocation();
+
   return (
+    location.pathname !== '/' &&
     <div className="w-full p-4 py-8 md:p-16 bg-gradient-to-br from-pink-600/20 via-purple-600/20 to-black backdrop-blur-lg">
       <div className="grid md:grid-cols-3">
         <div className="w-full">
@@ -74,15 +77,7 @@ const Footer = () => {
           <p className="inline mt-8">
             &copy; {new Date().getFullYear()} PICT CSI Student Branch. Designed
             & Developed with ♥ by{" "}
-            <Link
-              onClick={() => {
-                document.documentElement.scrollTop = 0;
-              }}
-              to="/web-team"
-              className="text-violet-400 hover:text-md hover:text-cyan-400"
-            >
               PCSB Web Team
-            </Link>
           </p>
         </div>
       </div>

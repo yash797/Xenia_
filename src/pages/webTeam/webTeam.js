@@ -1,11 +1,9 @@
-import React from "react";
 import "./webTeam.css";
 import ProfileCard from "./TeamProfile";
-import YashPic from "../../assets/images/YashPande_Formal.png";
 
 let teamDetails = [
   {
-    name: "Aryan Agarwal",
+    name: "Aryan Agrawal",
     linkedIn: "https://www.linkedin.com/in/-aryanagrawal/",
     pic: "https://surveyheartmedia.s3.ap-south-1.amazonaws.com/files/eb7d93792dc6258a110491d24d9d5f/62ca636b7dffdc1069d3189f/sh_1657432300507.jpg",
   },
@@ -23,8 +21,7 @@ let teamDetails = [
   {
     name: "Yash Pande",
     linkedIn: "https://www.linkedin.com/in/yash-pande-1a5812206",
-    pic: YashPic,
-    // https://drive.google.com/file/d/1t6tkxalN1DduDXAXY0Yrg_AAgp8RLg_d/view?usp=sharing
+    pic: "https://drive.google.com/uc?export=view&id=1LOq2Bb_04Yde_SfUtRs7AGZBekhnxony",
   },
 ];
 let prernaSthhall = [

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Requests from "../../api/requests";
 import { AuthVerify } from "../../utils/authVerify";
 
-function RegisteredEventCard(eve, setLoading) {
+function RegisteredEventCard(eve) {
   const [details, setDetails] = useState({});
 
   useEffect(() => {
@@ -71,29 +71,28 @@ export default function Profile(props) {
     await AuthVerify({
       getParticipations: true,
     }).then(async res => {
-      console.log(res);
       setTimeout(() => {
-        if (!res?.loggedIn) {
-          props.toast.toast.warn("Please login to visit the page!\nOr try refreshing your browser.")
-          navigate("/auth");
-        }
-      }, 3000);
-      setRegisteredEvents(res?.participations, setLoading);
-      setLoading(false);
+        setRegisteredEvents(res?.participations);
+        setLoading(false);
+      }, 1000);
     });
   }
-
+  
   useEffect(() => {
     setLoading(true)
+    if (!props?.loggedIn) {
+      setLoading(false);
+      navigate("/auth");
+    }
     Requests.getUserProfile().then(({ data: { status, error, data } }) => {
       if (status) {
         setUserData(data);
       } else {
-        props.toast.toast.error("Error retrieving user data!\n", error);
+        props.toast.toast.error("Error retrieving user data! Check if your Logged in correctly", error);
       }
       setLoading(false)
     }).catch(error =>
-      props.toast.toast.error("Error: Server unreachable, please try again. \n", error)
+      props.toast.toast.error("Error: Server unreachable, please try again.", error)
     )
     setParticipations();
   }, []);

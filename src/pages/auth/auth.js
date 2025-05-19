@@ -5,14 +5,14 @@ import { Validators } from "../../utils";
 import { Field, Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux/es/exports";
-import { loginUser, registerUser, logoutUser } from "../../store/middleware";
+import { loginUser, registerUser } from "../../store/middleware";
 
 const Login = (props) => {
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState("login");
   const [error, setError] = useState("");
 
-  const userState = useSelector(({ user }) => user);
+  // const userState = useSelector(async ({ user }) => await user); //* useSelector dhkoka de rha, abhi apn props he use krre ;-)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -33,18 +33,21 @@ const Login = (props) => {
     college: Validators.string,
   });
 
-  return userState.loggedIn ? (
-    <>
-      {props.toast.container}
-      {setTimeout(() => {
-        <Navigate to={-1} replace={true} />
-      }, 2000)}
-      {props.toast.toast.success("Logged In!")}
-    </>
+  // return userState.loggedIn ? (
+  return props.loggedIn ? (
+    <Navigate to={-1} replace={true} />
   ) : (
+    // <>
+    //   {props.toast.container}
+    //   {/* {setTimeout(() => {
+    //   {/* {props.toast.toast.success("Logged In!")} */}
+    //   }), 2000} */}
+    // </>
     <>
-      {loading ? props.loading :
-        <div class="h-screen w-full flex justify-center items-center">
+      {loading ? (
+        props.loading
+      ) : (
+        <div className="h-screen w-full flex justify-center items-center">
           {props.toast.container}
           <div className=" w-80 md:w-[400px] p-4 bg-black/20 backdrop-blur-md space-y-2 font-light">
             {mode === "login" ? (
@@ -55,32 +58,30 @@ const Login = (props) => {
                   mobile: "",
                   password: "",
                   confirmPassword: "",
-                  year: "FE"
+                  year: "FE",
                 }}
                 validationSchema={validate}
                 onSubmit={async (values) => {
-                  setLoading(true)
+                  setLoading(true);
                   setError("");
                   await dispatch(registerUser(values || null))
                     .unwrap()
-                    .then(({ data: { error } }) => {
-                      setLoading(false)
-                      if (error !== null || error !== {}) {
+                    .then(({ data: { error, status } }) => {
+                      setLoading(false);
+                      if (status) {
                         props.toast.toast.success("Successfully registered!");
                         setTimeout(() => {
                           navigate(-1, { replace: true });
-                        }, 3000);
-                      }
-                      else {
-                        props.toast.toast.error("Error: couldn't register!\n", error?.message);
-                        setError(error.message);
+                        }, 2500);
+                      } else {
+                        props.toast.toast.error("Error: " + error?.message);
+                        setError(error?.message);
                       }
                     })
                     .catch((err) => {
-                      props.toast.toast.error("Error: ", err);
-                      setLoading(false)
+                      props.toast.toast.error("Error: " + err?.message || "");
+                      setLoading(false);
                     });
-                  // await dispatch(logoutUser()) //! working, but just we need is a logout button to display in Navbar
                 }}
               >
                 {(formik) => {
@@ -118,7 +119,7 @@ const Login = (props) => {
                         className="w-full rounded border bg-gray-100 border-gray-200 p-2"
                         placeholder={"Password"}
                         name={"password"}
-                        type={"text"}
+                        type={"password"}
                         onChange={formik.handleChange}
                       />
                       {formik.errors.password && (
@@ -130,7 +131,7 @@ const Login = (props) => {
                         className="w-full rounded border bg-gray-100 border-gray-200 p-2"
                         placeholder={"Confirm password"}
                         name={"confirmPassword"}
-                        type={"text"}
+                        type={"password"}
                         onChange={formik.handleChange}
                       />
                       {formik.errors.confirmPassword && (
@@ -190,7 +191,9 @@ const Login = (props) => {
                         </button>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <div className="text-white">Already have an account ?</div>
+                        <div className="text-white">
+                          Already have an account ?
+                        </div>
                         <button
                           onClick={toggleMode}
                           className="p-2 bg-sky-600 px-4 text-white"
@@ -213,26 +216,26 @@ const Login = (props) => {
                   password: Validators.stringRequired,
                 })}
                 onSubmit={async (values) => {
-                  setLoading(true)
+                  setLoading(true);
                   setError("");
                   await dispatch(loginUser(values || null))
                     .unwrap()
-                    .then(({ data: { status, error } }) => {
-                      console.log(status);
-                      setLoading(false)
+                    .then(({ data: { data, status, error } }) => {
+                      setLoading(false);
                       if (status) {
                         props.toast.toast.success("Logged In!");
-                        navigate(-1, { replace: true });
+                        setTimeout(() => {
+                          return navigate(-1, { replace: true });
+                        }, 2000);
                       } else {
-                        props.toast.toast.error("Error: couldn't login!\n", error.message);
-                        setError(error.message);
+                        props.toast.toast.error("Error: " + error?.message);
+                        setError(error?.message);
                       }
                     })
                     .catch((err) => {
-                      props.toast.toast.error("Error: ", err);
-                      setLoading(false)
+                      props.toast.toast.error("Error: " + err?.message || "");
+                      setLoading(false);
                     });
-                  // await dispatch(logoutUser()) //! working, but just we need is a logout button to display in Navbar
                 }}
               >
                 {(formik) => {
@@ -292,7 +295,8 @@ const Login = (props) => {
               </Formik>
             )}
           </div>
-        </div>}
+        </div>
+      )}
     </>
   );
 };

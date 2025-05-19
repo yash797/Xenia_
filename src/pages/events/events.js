@@ -1,30 +1,21 @@
 import "./events.css";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Request from "../../api/requests";
+import eventsData from "./data"; // assuming data.js is in same folder
 
 const Events = (props) => {
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState(1);
   const [techEvents, setTechEvents] = useState([]);
   const [nonTechEvents, setNonTechEvents] = useState([]);
   const [events, setEvents] = useState([]);
 
-  async function fetchEventsData() {
-    setLoading(true);
-    await Request.getEvents()
-      .then((res) => {
-        let tech = [];
-        let nonTech = [];
-        tech = res.data.data.filter((event) => event.isTechnical);
-        nonTech = res.data.data.filter((event) => !event.isTechnical);
-        setTechEvents(tech);
-        setNonTechEvents(nonTech);
-        setEvents(tech);
-      })
-      .catch((err) => {
-        props.toast.toast.error("Error while fetching events data! ", err);
-      });
+  function fetchEventsData() {
+    const tech = eventsData.filter((event) => event.isTechnical);
+    const nonTech = eventsData.filter((event) => !event.isTechnical);
+    setTechEvents(tech);
+    setNonTechEvents(nonTech);
+    setEvents(tech);
     setLoading(false);
   }
 
@@ -62,7 +53,7 @@ const Events = (props) => {
           <div className="text-center place-items-center mx-auto md:w-5/6 p-4 gap-4">
             {events.map((event) => (
               <Link
-                to={`/events/${event._id}`}
+                to={`/events/${event?._id}`}
                 onClick={() => (document.documentElement.scrollTop = 0)}
               >
                 <div className="group relative hover:scale-105 ease-in-out transition-all inline-block m-4 align-top">
